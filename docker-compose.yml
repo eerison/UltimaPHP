@@ -1,0 +1,23 @@
+version: "2"
+services:
+  server:
+    image: php:7.1-cli
+    ports: 
+      - 2593:2593
+    links: 
+      - database
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - $PWD/tools/Database/mongo:/data/db/
+
+  mongo-seed:
+    image: mongo
+    links:
+      - database
+    volumes:
+      - $PWD/tools/Database/json:/var/json/
+    command: sh /var/json/_restoreDataBase.sh
